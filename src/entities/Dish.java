@@ -1,0 +1,46 @@
+package entities;
+
+public class Dish {
+    private String name;
+    private int price;
+    private int id;
+    private static int id_gen = 1;
+
+    public Dish(){
+        id = id_gen++;
+    }
+
+
+    public Dish(int id, String name, int price){
+        this();
+        setId(id);
+        setPrice(price);
+        setName(name);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
+}
