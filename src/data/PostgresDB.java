@@ -1,4 +1,4 @@
-package data.interfaces;
+package data;
 
 public class PostgresDB {
 }
