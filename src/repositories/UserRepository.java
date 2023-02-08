@@ -77,3 +77,106 @@ public class UserRepository implements IUserRepository {
         }
         return null;
     }
+    @Override
+    public List<Client> getAllClients() {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "SELECT id,name,surname,gender FROM clients";
+            Statement st = con.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            List<Client> clients = new LinkedList<>();
+            while (rs.next()) {
+                Client client = new Client(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getString("gender"));
+
+                clients.add(client);
+            }
+
+            return clients;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Dish> getMenuDishes(){
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "SELECT id,name,price FROM dishes";
+            Statement st = con.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            ArrayList<Dish> dishes = new ArrayList<>();
+            while (rs.next()) {
+                Dish dish = new Dish(rs.getInt("id"), rs.getString("name"), rs.getInt("price"));
+                dishes.add(dish);
+            }
+
+            return dishes;
+
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public boolean loginIn(String name, String surname){
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "SELECT id,name,surname,gender FROM clients";
+            Statement st = con.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            List<Client> clients = new LinkedList<>();
+            while (rs.next()) {
+                Client client = new Client(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getString("gender"));
+
+                clients.add(client);
+            }
+
+            for(entities.Client c : clients){
+                if(c.getName().equals(name) && c.getSurname().equals(surname)){
+                    return true;
+                }
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
+}
