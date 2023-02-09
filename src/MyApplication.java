@@ -1,6 +1,7 @@
-
+import java.util.concurrent.TimeUnit;
 import controllers.UserController;
 import entities.Dish;
+
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -51,7 +52,7 @@ public class MyApplication {
         }
     }
 
-    public void loginToAccount(){
+    public void loginToAccount() throws InterruptedException {
         System.out.print("Please enter name: ");
         String name = scanner.next();
         System.out.print("Please enter surname: ");
@@ -79,6 +80,7 @@ public class MyApplication {
             }
         }else{
             System.out.println("Please try again or sign-up");
+            TimeUnit.SECONDS.sleep(3);
         }
     }
 
