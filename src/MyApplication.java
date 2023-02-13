@@ -1,5 +1,6 @@
 import java.util.concurrent.TimeUnit;
 import controllers.UserController;
+import entities.Client;
 import entities.Dish;
 
 
@@ -10,6 +11,7 @@ import java.util.Scanner;
 
 public class MyApplication {
     private final UserController controller;
+    private Client loggedClient = null;
     public static ArrayList<Integer> orders = new ArrayList<>();
     private final Scanner scanner;
     private ArrayList<Dish> dishess = new ArrayList<>();
@@ -58,9 +60,12 @@ public class MyApplication {
         System.out.print("Please enter surname: ");
         String surname = scanner.next();
 
-        String response = controller.loginIn(name, surname);
-        System.out.println(response);
-        if(response.equals("<==- You sign in successfully! -==>")){
+        boolean response = controller.loginIn(name, surname);
+        loggedClient = controller.getLoggedUser();
+        if(response){
+            System.out.print("\nYou sign in successfully! ");
+            System.out.println("Welcome back "+loggedClient.getName()+"!");
+            TimeUnit.SECONDS.sleep(3);
             while (true){
                 System.out.println("1. Make an order");
                 System.out.println("2. Bring the bill");
@@ -79,7 +84,8 @@ public class MyApplication {
                 }
             }
         }else{
-            System.out.println("Please try again or sign-up");
+            System.out.println("\nFailed to sign in.");
+            System.out.println("Please try again or sign-up!");
             TimeUnit.SECONDS.sleep(3);
         }
     }
@@ -97,7 +103,6 @@ public class MyApplication {
             while (true) {
                 System.out.print("Make a choice (-1 for exist) :  ");
                 int choice1 = scanner.nextInt();
-
                 if (choice1 == -1) {
                     System.out.println();
                     break;

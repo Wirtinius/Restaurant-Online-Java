@@ -4,23 +4,29 @@ import entities.Client;
 import entities.Dish;
 import repositories.interfaces.IUserRepository;
 
+import java.lang.ref.Cleaner;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
     private final IUserRepository repo;
+    private static Client loggedUser = null;
 
     public UserController(IUserRepository repo) {
         this.repo = repo;
     }
 
-    public String loginIn(String name, String surname){
-        boolean logged = repo.loginIn(name, surname);
+    public boolean loginIn(String name, String surname){
+        loggedUser = repo.loginIn(name, surname);
 
-        if(logged){
-            return "<==- You sign in successfully! -==>";
+        if(!(loggedUser == null)){
+            return true;
         }
-        return "\nFailed to sign in!";
+        return false;
+    }
+
+    public Client getLoggedUser() {
+        return loggedUser;
     }
 
     public String createClient(String name, String surname, String gender) {

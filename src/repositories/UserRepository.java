@@ -22,12 +22,13 @@ public class UserRepository implements IUserRepository {
         Connection con = null;
         try {
             con = db.getConnection();
-            String sql = "INSERT INTO clients(name,surname,gender) VALUES (?,?,?)";
+            String sql = "INSERT INTO clients(name,surname,gender, balance) VALUES (?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, client.getName());
             st.setString(2, client.getSurname());
             st.setString(3, client.getGender());
+            st.setInt(4, client.getBalance());
 
             st.execute();
             return true;
@@ -50,7 +51,7 @@ public class UserRepository implements IUserRepository {
         Connection con = null;
         try {
             con = db.getConnection();
-            String sql = "SELECT id,name,surname,gender FROM clients WHERE id=?";
+            String sql = "SELECT id,name,surname,gender, balance FROM clients WHERE id=?";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setInt(1, id);
@@ -60,7 +61,8 @@ public class UserRepository implements IUserRepository {
                 Client client = new Client(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getString("gender"));
+                        rs.getString("gender"),
+                        rs.getInt("balance"));
 
                 return client;
             }
@@ -82,7 +84,7 @@ public class UserRepository implements IUserRepository {
         Connection con = null;
         try {
             con = db.getConnection();
-            String sql = "SELECT id,name,surname,gender FROM clients";
+            String sql = "SELECT * FROM clients";
             Statement st = con.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
@@ -91,7 +93,8 @@ public class UserRepository implements IUserRepository {
                 Client client = new Client(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getString("gender"));
+                        rs.getString("gender"),
+                        rs.getInt("balance"));
 
                 clients.add(client);
             }
@@ -141,11 +144,11 @@ public class UserRepository implements IUserRepository {
         return null;
     }
 
-    public boolean loginIn(String name, String surname){
+    public Client loginIn(String name, String surname){
         Connection con = null;
         try {
             con = db.getConnection();
-            String sql = "SELECT id,name,surname,gender FROM clients";
+            String sql = "SELECT id,name,surname,gender, balance FROM clients";
             Statement st = con.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
@@ -154,14 +157,15 @@ public class UserRepository implements IUserRepository {
                 Client client = new Client(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getString("gender"));
+                        rs.getString("gender"),
+                        rs.getInt("balance"));
 
                 clients.add(client);
             }
 
             for(entities.Client c : clients){
                 if(c.getName().equals(name) && c.getSurname().equals(surname)){
-                    return true;
+                    return c;
                 }
             }
 
@@ -177,6 +181,6 @@ public class UserRepository implements IUserRepository {
                 throwables.printStackTrace();
             }
         }
-        return false;
+        return null;
     }
 }

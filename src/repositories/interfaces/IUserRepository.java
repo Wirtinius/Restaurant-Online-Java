@@ -8,7 +8,7 @@ import java.util.List;
 public interface IUserRepository {
     boolean createClient(Client client);
     Client getClient(int id);
-    boolean loginIn(String name, String surname);
+    Client loginIn(String name, String surname);
     List<Client> getAllClients();
     List<Dish> getMenuDishes();
 //    List<Drink> getMenuDrinks();
