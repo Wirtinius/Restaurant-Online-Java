@@ -6,7 +6,6 @@ import entities.Dish;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class MyApplication {
@@ -28,16 +27,19 @@ public class MyApplication {
             System.out.println("========================");
             System.out.println("1. Login to account");
             System.out.println("2. Sign Up");
-            System.out.println("3. Exit");
+            System.out.println("3. Admin Login");
+            System.out.println("4. Exit");
 
             try {
-                System.out.print("Enter option (1-3): ");
+                System.out.print("Enter option (1-4): ");
                 int option = scanner.nextInt();
                 if (option == 1) {
                     loginToAccount();
                 } else if (option == 2) {
                     createUserMenu();
                 } else if (option == 3) {
+                    loginToAdmin();
+                } else if (option == 4) {
                     System.out.println("\n ==> Goodbye! See you later! <==");
                     break;
                 } else if (option == 999) {
@@ -87,6 +89,40 @@ public class MyApplication {
             System.out.println("\nFailed to sign in.");
             System.out.println("Please try again or sign-up!");
             TimeUnit.SECONDS.sleep(3);
+        }
+    }
+    public void loginToAdmin() {
+        System.out.print("Please enter admin username: ");
+        String username = scanner.next();
+        System.out.print("Please enter admin password: ");
+        String password = scanner.next();
+
+        if (username.equals("admin") && password.equals("password")) {
+            System.out.println("\n==> Welcome, Admin! <==");
+            while (true) {
+                System.out.println("\n1. Add a dish to the menu");
+                System.out.println("2. Remove a dish from the menu");
+                System.out.println("3. Edit a dish in the menu");
+                System.out.println("4. View the menu");
+                System.out.println("5. Log Out");
+                System.out.print("Enter option (1-5): ");
+                int option = scanner.nextInt();
+                if (option == 1) {
+                    addDishToMenu();
+                } else if (option == 2) {
+                    removeDishFromMenu();
+                } else if (option == 3) {
+                    editDishInMenu();
+                } else if (option == 4) {
+                    viewMenu();
+                } else if (option == 5) {
+                    break;
+                } else {
+                    System.out.println("Please choose the right command.");
+                }
+            }
+        } else {
+            System.out.println("\n==> Invalid admin credentials, please try again. <==");
         }
     }
 
@@ -163,4 +199,62 @@ public class MyApplication {
         String response = controller.createClient(name, surname, gender);
         System.out.println(response);
     }
+
+    public void addDishToMenu() {
+        System.out.print("Enter dish name: ");
+        String dishName = scanner.next();
+        System.out.print("Enter dish price: ");
+        int dishPrice = scanner.nextInt();
+
+        Dish newDish = new Dish();
+        dishess.add(newDish);
+        System.out.println("Dish successfully added to the menu.");
+    }
+
+    public void removeDishFromMenu() {
+        System.out.print("Enter dish name: ");
+        String dishName = scanner.next();
+
+        for (Dish dish : dishess) {
+            if (dish.getName().equals(dishName)) {
+                dishess.remove(dish);
+                System.out.println("Dish successfully removed from the menu.");
+                return;
+            }
+        }
+
+        System.out.println("Dish not found in the menu.");
+    }
+
+    public void editDishInMenu() {
+        System.out.print("Enter dish name: ");
+        String dishName = scanner.next();
+        System.out.print("Enter updated dish name: ");
+        String updatedDishName = scanner.next();
+        System.out.print("Enter updated dish price: ");
+        int updatedDishPrice = scanner.nextInt();
+
+        for (Dish dish : dishess) {
+            if (dish.getName().equals(dishName)) {
+                dish.setName(updatedDishName);
+                dish.setPrice(updatedDishPrice);
+                System.out.println("Dish successfully updated in the menu.");
+                return;
+            }
+        }
+
+        System.out.println("Dish not found in the menu.");
+    }
+
+    public void viewMenu() {
+        System.out.println("\n========================");
+        System.out.println("=   -AITU Restaurant-  =");
+        System.out.println("========================");
+        System.out.println("Dishes on the menu:");
+        for (Dish dish : dishess) {
+            System.out.println(dish.getName() + " - $" + dish.getPrice());
+        }
+    }
+
+
 }

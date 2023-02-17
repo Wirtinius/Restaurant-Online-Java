@@ -10,6 +10,7 @@ public interface IUserRepository {
     Client getClient(int id);
     Client loginIn(String name, String surname);
     List<Client> getAllClients();
+    boolean adminLogin(String name, String surname);
     List<Dish> getMenuDishes();
 //    List<Drink> getMenuDrinks();
 

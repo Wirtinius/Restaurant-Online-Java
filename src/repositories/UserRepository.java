@@ -183,4 +183,14 @@ public class UserRepository implements IUserRepository {
         }
         return null;
     }
+
+    public boolean adminLogin(String username, String password) {
+        if (username.equals("admin") && password.equals("password")) {
+            System.out.println("Login successful.");
+            return true;
+        } else {
+            System.out.println("Invalid username or password.");
+            return false;
+        }
+    }
 }

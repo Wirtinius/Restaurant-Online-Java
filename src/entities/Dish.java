@@ -10,7 +10,6 @@ public class Dish {
         id = id_gen++;
     }
 
-
     public Dish(int id, String name, int price){
         this();
         setId(id);
