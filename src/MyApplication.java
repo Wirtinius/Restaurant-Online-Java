@@ -19,7 +19,9 @@ public class MyApplication {
         this.controller = controller;
         scanner = new Scanner(System.in);
     }
-
+    public ArrayList<Integer> getOrders() {
+        return orders;
+    }
     public void start() throws InputMismatchException {
         while (true) {
             System.out.println("\n========================");
@@ -105,7 +107,8 @@ public class MyApplication {
                 System.out.println("3. Edit a dish in the menu");
                 System.out.println("4. View the menu");
                 System.out.println("5. Log Out");
-                System.out.print("Enter option (1-5): ");
+                System.out.println("6. View all orders");
+                System.out.print("Enter option (1-6): ");
                 int option = scanner.nextInt();
                 if (option == 1) {
                     addDishToMenu();
@@ -117,7 +120,10 @@ public class MyApplication {
                     viewMenu();
                 } else if (option == 5) {
                     break;
-                } else {
+                } else if (option == 6) {
+                    viewAllOrders();
+                }
+                else {
                     System.out.println("Please choose the right command.");
                 }
             }
@@ -255,6 +261,21 @@ public class MyApplication {
             System.out.println(dish.getName() + " - $" + dish.getPrice());
         }
     }
-
-
+    public void viewAllOrders() {
+//        ArrayList<Client> clients = controller.getClients();
+//        System.out.println("\n=======================================");
+//        System.out.println("|      Order History of All Clients    |");
+//        System.out.println("=======================================");
+//        for (Client client : clients) {
+//            ArrayList<Integer> clientOrders = client.getOrders();
+//            if (clientOrders.size() > 0) {
+//                System.out.println("\nClient: " + client.getName() + " " + client.getSurname());
+//                System.out.println("Orders:");
+//                for (Integer order : clientOrders) {
+//                    System.out.println(" - " + dishess.get(order).getName() + " ($" + dishess.get(order).getPrice() + ")");
+//                }
+//            }
+//        }
+        System.out.println("=======================================\n");
+    }
 }
