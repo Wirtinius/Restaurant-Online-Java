@@ -45,6 +45,33 @@ public class UserRepository implements IUserRepository {
         }
         return false;
     }
+    public boolean createAdmin(Client admin) {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "INSERT INTO clients(name,surname,gender, balance) VALUES (?,?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, admin.getName());
+            st.setString(2, admin.getSurname());
+            st.setString(3, admin.getGender());
+            st.setInt(4, admin.getBalance());
+
+            st.execute();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
 
     @Override
     public Client getClient(int id) {
