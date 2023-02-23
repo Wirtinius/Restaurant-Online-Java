@@ -4,13 +4,13 @@ import data.interfaces.IDB;
 import entities.Client;
 import entities.Dish;
 import entities.Order;
-import repositories.interfaces.IUserRepository;
+import repositories.interfaces.IDishRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-public class DishRepository {
+public class DishRepository implements IDishRepository {
 
     private final IDB db;
 

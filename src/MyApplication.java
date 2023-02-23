@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import controllers.UserController;
+import controllers.DishController;
+import controllers.OrderController;
 import entities.Client;
 import entities.Dish;
 
@@ -10,14 +12,19 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MyApplication {
-    private final UserController controller;
+    private final UserController usercontroller;
+    private final OrderController ordercontroller;
+
+    private final DishController dishcontroller;
     private Client loggedClient = null;
     public static ArrayList<Integer> orders = new ArrayList<>();
     private final Scanner scanner;
     private ArrayList<Dish> dishess = new ArrayList<>();
 
-    public MyApplication(UserController controller) {
-        this.controller = controller;
+    public MyApplication(UserController usercontroller, OrderController ordercontroller, DishController dishcontroller) {
+        this.usercontroller = usercontroller;
+        this.ordercontroller = ordercontroller;
+        this.dishcontroller = dishcontroller;
         scanner = new Scanner(System.in);
     }
 
@@ -67,8 +74,8 @@ public class MyApplication {
         System.out.print("Please enter surname: ");
         String surname = scanner.next();
 
-        boolean response = controller.loginIn(name, surname);
-        loggedClient = controller.getLoggedUser();
+        boolean response = usercontroller.loginIn(name, surname);
+        loggedClient = usercontroller.getLoggedUser();
         if (response) {
             System.out.print("\nYou sign in successfully! ");
             System.out.println("Welcome back " + loggedClient.getName() + "!");
@@ -136,7 +143,7 @@ public class MyApplication {
     }
 
     public void getMenu() {
-        ArrayList<Dish> dishes = controller.getMenuDishes();
+        ArrayList<Dish> dishes = dishcontroller.getMenuDishes();
         dishess = dishes;
         if (dishes != null) {
             System.out.println("\n===========================  -Menu-  ===========================");
@@ -185,7 +192,7 @@ public class MyApplication {
     }
 
     public void getAllUsersMenu() {
-        String response = controller.getAllClients();
+        String response = usercontroller.getAllClients();
         System.out.println(response);
     }
 
@@ -193,7 +200,7 @@ public class MyApplication {
         System.out.println("Please enter id");
 
         int id = scanner.nextInt();
-        String response = controller.getClient(id);
+        String response = usercontroller.getClient(id);
         System.out.println(response);
     }
 
@@ -205,7 +212,7 @@ public class MyApplication {
         System.out.println("Please enter gender (male/female)");
         String gender = scanner.next();
 
-        String response = controller.createClient(name, surname, gender);
+        String response = usercontroller.createClient(name, surname, gender);
         System.out.println(response);
     }
 

@@ -48,21 +48,5 @@ public class UserController {
         return clients.toString();
     }
 
-    public ArrayList<Dish> getMenuDishes() {
-        ArrayList<Dish> dishes = (ArrayList<Dish>) Userrepo.getMenuDishes();
 
-        return dishes;
-    }
-
-    public String getMenuDrinks() {
-        List<Client> clients = Userrepo.getAllClients();
-
-        return clients.toString();
-    }
-
-    public ArrayList<Order> getAllOrders() {
-        ArrayList<Order> orders = (ArrayList<Order>) Userrepo.getAllOrders();
-
-        return orders;
-    }
 }

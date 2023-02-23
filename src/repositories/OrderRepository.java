@@ -12,6 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OrderRepository implements IOrderRepository {
+    private final IDB db;
+    public OrderRepository(IDB db) {
+        this.db = db;
+    }
 
 //    private final IDB db;
 //
