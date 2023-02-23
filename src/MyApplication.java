@@ -1,4 +1,8 @@
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import controllers.DishController;
+import controllers.OrderController;
 import controllers.UserController;
 import entities.Admin;
 import entities.Client;
@@ -11,14 +15,18 @@ import java.util.Scanner;
 
 public class MyApplication {
     private final UserController controller;
+    private final OrderController orderController;
+    private final DishController dishController;
     private Client loggedUser = null;
     private Admin loggedAdmin = null;
     public static ArrayList<Integer> orders = new ArrayList<>();
     private final Scanner scanner;
-    private ArrayList<Dish> dishess = new ArrayList<>();
+    private ArrayList<Dish> dishes2;
 
-    public MyApplication(UserController controller) {
+    public MyApplication(UserController controller, OrderController orderController, DishController dishController) {
         this.controller = controller;
+        this.orderController = orderController;
+        this.dishController = dishController;
         scanner = new Scanner(System.in);
     }
     public ArrayList<Integer> getOrders() {
@@ -137,13 +145,15 @@ public class MyApplication {
     }
 
     public void getMenu(){
-        ArrayList<Dish> dishes = controller.getMenuDishes();
-        dishess = dishes;
+        List<Dish> dishes = controller.getMenuDishes();
+        dishes2 = new ArrayList<Dish>(dishes);
+        System.out.println(dishes.toString());
+        System.out.println(dishes2.toString());
         if (dishes != null) {
             System.out.println("\n===========================  -Menu-  ===========================");
             System.out.printf("|%-10s | %-30s | %-15s |%n", "No", "Dish Name", "Price");
-            for (entities.Dish dish : dishes) {
-                System.out.printf("|%-10d | %-30s | %15f |%n", dish.getId(), dish.getName(), dish.getPrice());
+            for (Dish dish : dishes2) {
+                System.out.printf("|%-10d | %-30s | %15d |%n", dish.getId(), dish.getName(), dish.getPrice());
             }
             System.out.println("================================================================");
             while (true) {
@@ -160,6 +170,8 @@ public class MyApplication {
                     System.out.println("Please enter right id's");
                 }
             }
+        }else {
+            System.out.println("NULL");
         }
         if(dishes != null){
             System.out.println("Your orders are successfully added!");
@@ -177,8 +189,8 @@ public class MyApplication {
         System.out.println("\n===========================  -Checkout-  ===========================");
         System.out.printf("|%-10s | %-30s | %-15s |%n", "No", "Dish Name", "Price");
         for (int o:orderz) {
-            System.out.printf("|%-10d | %-30s | %15f |%n", index++, dishess.get(o).getName(), dishess.get(o).getPrice());
-            summa += dishess.get(o).getPrice();
+            System.out.printf("|%-10d | %-30s | %15f |%n", index++, dishes2.get(o).getName(), dishes2.get(o).getPrice());
+            summa += dishes2.get(o).getPrice();
         }
         System.out.println("=====================================================================");
 
@@ -226,7 +238,7 @@ public class MyApplication {
         System.out.println("=   -AITU Restaurant-  =");
         System.out.println("========================");
         System.out.println("Dishes on the menu:");
-        for (Dish dish : dishess) {
+        for (Dish dish : dishes2) {
             System.out.println(dish.getName() + " - $" + dish.getPrice());
         }
     }

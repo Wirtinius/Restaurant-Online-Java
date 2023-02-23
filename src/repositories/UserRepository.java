@@ -226,6 +226,39 @@ public class UserRepository implements IUserRepository {
 
     }
 
+    @Override
+    public List<Dish> getMenuDishes() {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "SELECT * FROM dishes";
+            Statement st = con.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            List<Dish> dishes = new LinkedList<>();
+            while (rs.next()) {
+                Dish dish = new Dish(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("price"));
+
+                dishes.add(dish);
+            }
+
+            return dishes;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     public boolean addDishToMenu(Dish dish) {
         Connection con = null;

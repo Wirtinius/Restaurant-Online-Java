@@ -59,10 +59,15 @@ public class UserController {
         return clients.toString();
     }
 
-    public ArrayList<Dish> getMenuDishes() {
-        ArrayList<Dish> dishes = (ArrayList<Dish>) repo.getMenuDishes();
+    public List<Dish> getMenuDishes() {
+        List<Dish> dishes = repo.getMenuDishes();
 
-        return dishes;
+        if(dishes != null){
+            return dishes;
+        }else {
+            System.out.println(dishes.toString());
+        }
+        return null;
     }
 
     public static Admin getLoggedAdmin() {
