@@ -1,6 +1,7 @@
 package repositories;
 
 import data.interfaces.IDB;
+import entities.Admin;
 import entities.Client;
 import entities.Dish;
 import repositories.interfaces.IUserRepository;
@@ -9,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserRepository implements IUserRepository {
     private final IDB db;
@@ -211,13 +213,72 @@ public class UserRepository implements IUserRepository {
         return null;
     }
 
-    public boolean adminLogin(String username, String password) {
-        if (username.equals("admin") && password.equals("password")) {
-            System.out.println("Login successful.");
-            return true;
-        } else {
-            System.out.println("Invalid username or password.");
-            return false;
+    public Admin adminLogin(String name, String surname, String password)  {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql1 = "SELECT * FROM admins";
+            Statement st = con.createStatement();
+            ResultSet rs1 = st.executeQuery(sql1);
+            List<Admin> admins = new LinkedList<>();
+
+            while (rs1.next()) {
+                Admin admin = new Admin(rs1.getInt("id"),
+                        rs1.getString("name"),
+                        rs1.getString("surname"),
+                        rs1.getString("password"));
+
+                admins.add(admin);
+            }
+
+            for(entities.Admin a : admins){
+                if(a.getName().equals(name) && a.getSurname().equals(surname) && a.getPassword().equals(password)){
+                        return a;
+                }
+            }
+
+
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
+        return null;
+
     }
+
+
+    public boolean addDishToMenu(Dish dish) {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "INSERT INTO dishes(name,price) VALUES (?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, dish.getName());
+            st.setInt(2, dish.getPrice());
+
+            st.execute();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+
 }

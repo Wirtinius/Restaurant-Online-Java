@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Admin;
 import entities.Client;
 import entities.Dish;
 import repositories.interfaces.IUserRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 public class UserController {
     private final IUserRepository repo;
     private static Client loggedUser = null;
+    private static Admin loggedAdmin = null;
 
     public UserController(IUserRepository repo) {
         this.repo = repo;
@@ -20,6 +22,15 @@ public class UserController {
         loggedUser = repo.loginIn(name, surname);
 
         if(!(loggedUser == null)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean adminLogin(String name, String surname, String password){
+        loggedAdmin = repo.adminLogin(name, surname, password);
+
+        if(!(loggedAdmin == null)){
             return true;
         }
         return false;
@@ -54,9 +65,20 @@ public class UserController {
         return dishes;
     }
 
+    public static Admin getLoggedAdmin() {
+        return loggedAdmin;
+    }
+
     public String getMenuDrinks() {
         List<Client> clients = repo.getAllClients();
 
         return clients.toString();
+    }
+
+    public String addDishToMenu(String name, int price) {
+        Dish dish = new Dish(name, price);
+
+        boolean created = repo.addDishToMenu(dish);
+        return (created ? "Dish was added!" : "Dish creation was failed!");
     }
 }

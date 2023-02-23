@@ -10,6 +10,11 @@ public class Dish {
         id = id_gen++;
     }
 
+    public Dish(String name, int price){
+        setPrice(price);
+        setName(name);
+    }
+
     public Dish(int id, String name, int price){
         this();
         setId(id);
@@ -33,7 +38,7 @@ public class Dish {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 

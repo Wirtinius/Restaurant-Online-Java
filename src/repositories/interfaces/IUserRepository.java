@@ -1,5 +1,6 @@
 package repositories.interfaces;
 
+import entities.Admin;
 import entities.Client;
 import entities.Dish;
 
@@ -11,8 +12,10 @@ public interface IUserRepository {
     Client getClient(int id);
     Client loginIn(String name, String surname);
     List<Client> getAllClients();
-    boolean adminLogin(String name, String surname);
+    Admin adminLogin(String name, String surname, String password);
     List<Dish> getMenuDishes();
+
+    boolean addDishToMenu(Dish dish);
 //    List<Drink> getMenuDrinks();
 
 }

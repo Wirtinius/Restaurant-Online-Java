@@ -1,5 +1,6 @@
 import java.util.concurrent.TimeUnit;
 import controllers.UserController;
+import entities.Admin;
 import entities.Client;
 import entities.Dish;
 
@@ -10,7 +11,8 @@ import java.util.Scanner;
 
 public class MyApplication {
     private final UserController controller;
-    private Client loggedClient = null;
+    private Client loggedUser = null;
+    private Admin loggedAdmin = null;
     public static ArrayList<Integer> orders = new ArrayList<>();
     private final Scanner scanner;
     private ArrayList<Dish> dishess = new ArrayList<>();
@@ -65,10 +67,10 @@ public class MyApplication {
         String surname = scanner.next();
 
         boolean response = controller.loginIn(name, surname);
-        loggedClient = controller.getLoggedUser();
+        loggedUser = controller.getLoggedUser();
         if(response){
             System.out.print("\nYou sign in successfully! ");
-            System.out.println("Welcome back "+loggedClient.getName()+"!");
+            System.out.println("Welcome back "+ loggedUser.getName()+"!");
             TimeUnit.SECONDS.sleep(3);
             while (true){
                 System.out.println("1. Make an order");
@@ -87,20 +89,24 @@ public class MyApplication {
                     System.out.println("Please choose the right command.");
                 }
             }
-        }else{
+        } else{
             System.out.println("\nFailed to sign in.");
             System.out.println("Please try again or sign-up!");
             TimeUnit.SECONDS.sleep(3);
         }
     }
-    public void loginToAdmin() {
-        System.out.print("Please enter admin username: ");
-        String username = scanner.next();
-        System.out.print("Please enter admin password: ");
+    public void loginToAdmin() throws InterruptedException {
+        System.out.print("Please enter name: ");
+        String name = scanner.next();
+        System.out.print("Please enter surname: ");
+        String surname = scanner.next();
+        System.out.print("Please enter password: ");
         String password = scanner.next();
 
-        if (username.equals("admin") && password.equals("password")) {
-            System.out.println("\n==> Welcome, Admin! <==");
+        boolean response = controller.adminLogin(name, surname, password);
+        loggedAdmin = UserController.getLoggedAdmin();
+        if (response){
+            System.out.println("\n==> Welcome, "+ loggedAdmin.getName() + "! <==");
             while (true) {
                 System.out.println("\n1. Add a dish to the menu");
                 System.out.println("2. Remove a dish from the menu");
@@ -112,10 +118,6 @@ public class MyApplication {
                 int option = scanner.nextInt();
                 if (option == 1) {
                     addDishToMenu();
-                } else if (option == 2) {
-                    removeDishFromMenu();
-                } else if (option == 3) {
-                    editDishInMenu();
                 } else if (option == 4) {
                     viewMenu();
                 } else if (option == 5) {
@@ -127,8 +129,10 @@ public class MyApplication {
                     System.out.println("Please choose the right command.");
                 }
             }
-        } else {
-            System.out.println("\n==> Invalid admin credentials, please try again. <==");
+        } else{
+            System.out.println("\nFailed to sign in.");
+            System.out.println("Please try again!");
+            TimeUnit.SECONDS.sleep(3);
         }
     }
 
@@ -212,45 +216,10 @@ public class MyApplication {
         System.out.print("Enter dish price: ");
         int dishPrice = scanner.nextInt();
 
-        Dish newDish = new Dish();
-        dishess.add(newDish);
-        System.out.println("Dish successfully added to the menu.");
+        String response = controller.addDishToMenu(dishName, dishPrice);
+        System.out.println(response);
     }
 
-    public void removeDishFromMenu() {
-        System.out.print("Enter dish name: ");
-        String dishName = scanner.next();
-
-        for (Dish dish : dishess) {
-            if (dish.getName().equals(dishName)) {
-                dishess.remove(dish);
-                System.out.println("Dish successfully removed from the menu.");
-                return;
-            }
-        }
-
-        System.out.println("Dish not found in the menu.");
-    }
-
-    public void editDishInMenu() {
-        System.out.print("Enter dish name: ");
-        String dishName = scanner.next();
-        System.out.print("Enter updated dish name: ");
-        String updatedDishName = scanner.next();
-        System.out.print("Enter updated dish price: ");
-        int updatedDishPrice = scanner.nextInt();
-
-        for (Dish dish : dishess) {
-            if (dish.getName().equals(dishName)) {
-                dish.setName(updatedDishName);
-                dish.setPrice(updatedDishPrice);
-                System.out.println("Dish successfully updated in the menu.");
-                return;
-            }
-        }
-
-        System.out.println("Dish not found in the menu.");
-    }
 
     public void viewMenu() {
         System.out.println("\n========================");
@@ -278,4 +247,7 @@ public class MyApplication {
 //        }
         System.out.println("=======================================\n");
     }
+
+
+
 }
