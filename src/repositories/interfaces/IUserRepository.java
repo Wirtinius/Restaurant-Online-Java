@@ -2,6 +2,7 @@ package repositories.interfaces;
 
 import entities.Client;
 import entities.Dish;
+import entities.Order;
 
 import java.util.List;
 
@@ -12,7 +13,5 @@ public interface IUserRepository {
     Client loginIn(String name, String surname);
     List<Client> getAllClients();
     boolean adminLogin(String name, String surname);
-    List<Dish> getMenuDishes();
-//    List<Drink> getMenuDrinks();
 
 }

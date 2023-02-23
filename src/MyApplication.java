@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import controllers.UserController;
 import entities.Client;
@@ -19,9 +20,11 @@ public class MyApplication {
         this.controller = controller;
         scanner = new Scanner(System.in);
     }
+
     public ArrayList<Integer> getOrders() {
         return orders;
     }
+
     public void start() throws InputMismatchException {
         while (true) {
             System.out.println("\n========================");
@@ -66,33 +69,34 @@ public class MyApplication {
 
         boolean response = controller.loginIn(name, surname);
         loggedClient = controller.getLoggedUser();
-        if(response){
+        if (response) {
             System.out.print("\nYou sign in successfully! ");
-            System.out.println("Welcome back "+loggedClient.getName()+"!");
+            System.out.println("Welcome back " + loggedClient.getName() + "!");
             TimeUnit.SECONDS.sleep(3);
-            while (true){
+            while (true) {
                 System.out.println("1. Make an order");
                 System.out.println("2. Bring the bill");
                 System.out.println("3. Log Out");
                 System.out.print("Please choose one of the options: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
-                if(choice == 1){
+                if (choice == 1) {
                     getMenu();
                 } else if (choice == 2) {
                     checkBill();
                 } else if (choice == 3) {
                     break;
-                }else{
+                } else {
                     System.out.println("Please choose the right command.");
                 }
             }
-        }else{
+        } else {
             System.out.println("\nFailed to sign in.");
             System.out.println("Please try again or sign-up!");
             TimeUnit.SECONDS.sleep(3);
         }
     }
+
     public void loginToAdmin() {
         System.out.print("Please enter admin username: ");
         String username = scanner.next();
@@ -122,8 +126,7 @@ public class MyApplication {
                     break;
                 } else if (option == 6) {
                     viewAllOrders();
-                }
-                else {
+                } else {
                     System.out.println("Please choose the right command.");
                 }
             }
@@ -132,7 +135,7 @@ public class MyApplication {
         }
     }
 
-    public void getMenu(){
+    public void getMenu() {
         ArrayList<Dish> dishes = controller.getMenuDishes();
         dishess = dishes;
         if (dishes != null) {
@@ -150,29 +153,29 @@ public class MyApplication {
                     break;
                 }
 
-                if(choice1 != -1 && choice1 <= dishes.size()){
+                if (choice1 != -1 && choice1 <= dishes.size()) {
                     orders.add(choice1 - 1);
-                }else{
+                } else {
                     System.out.println("Please enter right id's");
                 }
             }
         }
-        if(dishes != null){
+        if (dishes != null) {
             System.out.println("Your orders are successfully added!");
             System.out.println("*************************\n");
         }
     }
 
-    public void checkBill(){
+    public void checkBill() {
         int[] orderz = new int[orders.size()];
-        for(int i=0; i<orders.size(); i++){
+        for (int i = 0; i < orders.size(); i++) {
             orderz[i] = orders.get(i);
         }
 
         int summa = 0, index = 1;
         System.out.println("\n===========================  -Checkout-  ===========================");
         System.out.printf("|%-10s | %-30s | %-15s |%n", "No", "Dish Name", "Price");
-        for (int o:orderz) {
+        for (int o : orderz) {
             System.out.printf("|%-10d | %-30s | %15f |%n", index++, dishess.get(o).getName(), dishess.get(o).getPrice());
             summa += dishess.get(o).getPrice();
         }
@@ -261,21 +264,35 @@ public class MyApplication {
             System.out.println(dish.getName() + " - $" + dish.getPrice());
         }
     }
+
     public void viewAllOrders() {
-//        ArrayList<Client> clients = controller.getClients();
+//        List<Client> clients = repo.getAllClients();
+//        List<Dish> dishes = repo.getMenuDishes();
+//
 //        System.out.println("\n=======================================");
 //        System.out.println("|      Order History of All Clients    |");
 //        System.out.println("=======================================");
+//
 //        for (Client client : clients) {
-//            ArrayList<Integer> clientOrders = client.getOrders();
+//            List<Integer> clientOrders = client.getOrders();
+//
 //            if (clientOrders.size() > 0) {
 //                System.out.println("\nClient: " + client.getName() + " " + client.getSurname());
 //                System.out.println("Orders:");
-//                for (Integer order : clientOrders) {
-//                    System.out.println(" - " + dishess.get(order).getName() + " ($" + dishess.get(order).getPrice() + ")");
+//
+//                for (Integer orderId : clientOrders) {
+//                    Dish dish = dishes.stream()
+//                            .filter(d -> d.getId() == orderId)
+//                            .findFirst()
+//                            .orElse(null);
+//
+//                    if (dish != null) {
+//                        System.out.println(" - " + dish.getName() + " ($" + dish.getPrice() + ")");
+//                    }
 //                }
 //            }
 //        }
+
         System.out.println("=======================================\n");
     }
 }
